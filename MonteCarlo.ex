@@ -1,25 +1,29 @@
 
 defmodule MonteCarlo do
   def main() do
-
-    rounds(1000, 100, 5)
+    num_darts = 100000
+    num_rounds = 1000
+    radius = 100000
+    #pi = rounds(num_darts, num_rounds, radius)
+    #IO.puts("Actual PI - Estimation: #{:math.pi()} - #{pi} = #{:math.pi() - pi}")
+    #IO.puts("Throwing #{num_darts} darts, #{num_rounds} times, with radius #{radius} gives \n PI = #{pi}")
+    leibnitz(1000000)
   end
+
+  def leibnitz(n) do
+      4 * Enum.reduce(0..n, 0, fn(k,a) -> a + 1/(4*k + 1) - 1/(4*k + 3) end)
+    end
   def rounds(k, j, r) do
     rounds(k, j, 0, r, 0)
   end
   def rounds(0, _, t, _, a) do
+    IO.puts("Total darts = #{t}\n Total hits = #{a}\n PI = 4 * #{a} / #{t}")
     4*a/t
   end
-  #a = antalet träffat innan för arch
-  #j = antalet kast
-  #t = antalet rundor
-  #k
   def rounds(k,j,t,r,a) do
     a = round(j,r,a)
     t = t+j
-    IO.puts("#{4*a} / #{t} = #{4*a/t}")
-    pi = (4*a)/t
-    :io.format("~14.10f\n", [pi, pi - :math.pi()])
+    pi = 4*a / t
     rounds(k-1, j, t, r, a)
   end
 
